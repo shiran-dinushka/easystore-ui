@@ -23,7 +23,7 @@ export default function Contact() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const userConfirmed = window.confirm(
-      "Are you sure you want to submit the form?"
+      "Are you sure you want to submit the form?",
     );
 
     if (userConfirmed) {
@@ -154,8 +154,10 @@ export async function contactAction({ request, params }) {
     // return redirect("/home");
   } catch (error) {
     throw new Response(
-      error.message || "Failed to submit your message. Please try again.",
-      { status: error.status || 500 }
+      error.response?.data?.message ||
+        error.message ||
+        "Failed to submit your message. Please try again.",
+      { status: error.status || 500 },
     );
   }
 }
