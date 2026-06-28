@@ -64,7 +64,7 @@ function ProductListing({ products }) {
             <ProductCard key={product.productId} product={product} />
           ))
         ) : (
-          <p className="products-listing-empty">No products available.</p>
+          <p className="text-center font-primary font-bold text-lg text-primary dark:text-light">No products available.</p>
         )}
       </div>
     </div>
