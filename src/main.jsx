@@ -19,6 +19,14 @@ import ErrorPage from "./components/ErrorPage.jsx";
 import { productsLoader } from "./components/Home.jsx";
 import ProductDetail from "./components/ProductDetail.jsx";
 import { CartProvider } from "./store/cart-context.jsx";
+import { AuthProvider } from "./store/auth-context.jsx";
+import CheckoutForm from "./components/CheckoutForm.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import AdminOrders from "./components/Admin/AdminOrders.jsx";
+import Orders from "./components/Orders.jsx";
+import Profile from "./components/Profile.jsx";
+import Messages from "./components/Admin/Messages.jsx";
+import Register, { registerAction } from "./components/Register.jsx";
 
 const routeDefinitions = createRoutesFromElements(
   <Route path="/" element={<App />} errorElement={<ErrorPage />}>
@@ -27,8 +35,16 @@ const routeDefinitions = createRoutesFromElements(
     <Route path="/about" element={<About />} />
     <Route path="/contact" element={<Contact />} action={contactAction} />
     <Route path="/login" element={<Login />} action={loginAction} />
+    <Route path="/register" element={<Register />} action={registerAction} />
     <Route path="/cart" element={<Cart />} />
     <Route path="/products/:productId" element={<ProductDetail />} />
+    <Route element={<ProtectedRoute />}>
+      <Route path="/checkout" element={<CheckoutForm />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/orders" element={<Orders />} />
+      <Route path="/admin/orders" element={<AdminOrders />} />
+      <Route path="/admin/messages" element={<Messages />} />
+    </Route>
   </Route>,
 );
 
@@ -68,12 +84,13 @@ const router = createBrowserRouter(routeDefinitions);
   },
 ]);*/
 
-
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <CartProvider>
-      <RouterProvider router={router} />
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <RouterProvider router={router} />
+      </CartProvider>
+    </AuthProvider>
     <ToastContainer
       position="top-center"
       autoClose={3000}
