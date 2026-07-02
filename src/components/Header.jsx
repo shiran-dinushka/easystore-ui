@@ -4,7 +4,7 @@ import {
   faSun,
   faMoon,
   faShoppingBasket,
-  faAngleDown
+  faAngleDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect, useContext, useRef } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
@@ -17,7 +17,7 @@ const Header = () => {
     return savedTheme || "light";
   });
 
-   const isAdmin = true;
+  const isAdmin = true;
   const [isUserMenuOpen, setUserMenuOpen] = useState(false);
   const [isAdminMenuOpen, setAdminMenuOpen] = useState(false);
   const location = useLocation();
@@ -28,7 +28,7 @@ const Header = () => {
   const toggleUserMenu = () => setUserMenuOpen((prev) => !prev);
 
   const { totalQuantity } = useCart();
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, user, logout } = useAuth();
 
   useEffect(() => {
     if (theme === "dark") {
@@ -47,7 +47,7 @@ const Header = () => {
     document.addEventListener("mousedown", handleClickOutside);
   }, [theme, location.pathname]);
 
- const toggleTheme = () => {
+  const toggleTheme = () => {
     setTheme((prevTheme) => {
       const newTheme = prevTheme === "light" ? "dark" : "light";
       localStorage.setItem("theme", newTheme);
@@ -122,7 +122,9 @@ const Header = () => {
                     onClick={toggleUserMenu}
                     className="relative text-primary"
                   >
-                    <span className={navLinkClasses}>Hello John Doe</span>
+                    <span className={navLinkClasses}>
+                      {`Hello, ${user.name.length > 6 ? `${user.name.slice(0, 6)}...` : user.name}`}
+                    </span>
                     <FontAwesomeIcon
                       icon={faAngleDown}
                       className="text-primary dark:text-light w-6 h-6"
