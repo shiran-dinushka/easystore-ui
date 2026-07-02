@@ -9,20 +9,24 @@ import {
 } from "react-router-dom";
 import apiClient from "../api/apiClient";
 import { toast } from "react-toastify";
+import { useAuth } from "../store/auth-context";
 
 export default function Login() {
   const actionData = useActionData();
   const navigation = useNavigation();
   const isSubmitting = navigation.state == "submitting";
   const navigate = useNavigate();
+  const { loginSuccess } = useAuth();
+  const form = sessionStorage.getItem("redirectPath") || "/home";
 
-  useEffect(()=>{
-    if(actionData?.success){
-      navigate("/home");
-    }else if (actionData?.errors){
+  useEffect(() => {
+    if (actionData?.success) {
+      loginSuccess(actionData.jwtToken, actionData.user);
+      navigate(form);
+    } else if (actionData?.errors) {
       toast.error(actionData.errors.message || "Login failed");
     }
-  })
+  }, [actionData]);
 
   const labelStyle =
     "block text-lg font-semibold text-primary dark:text-light mb-2";
