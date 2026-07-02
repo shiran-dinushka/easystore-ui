@@ -108,7 +108,6 @@ export async function loginAction({ request }) {
     password: data.get("password"),
   };
 
-  console.log(loginData);
   try {
     const response = await apiClient.post("/auth/login", loginData);
     const { message, user, jwtToken } = response.data;
